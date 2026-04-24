@@ -1,0 +1,44 @@
+name: marketi
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  dartz: ^0.10.1
+  dio: ^5.9.2
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.2.4
+  pinput: ^6.0.2
+  bloc: ^9.2.0
+  flutter_bloc: ^9.1.1
+  meta: ^1.17.0
+  get_it: ^9.2.1
+  shared_preferences: ^2.5.5
+  flutter_stripe: ^12.6.0
+  image_picker: ^1.1.2
+  shimmer: ^3.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
