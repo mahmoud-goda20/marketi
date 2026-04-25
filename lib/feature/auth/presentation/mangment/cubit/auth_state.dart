@@ -18,3 +18,9 @@ final class AuthFailure extends AuthState {
 
   AuthFailure({required this.errorMessage});
 }
+
+final class AuthCodeSent extends AuthState {}
+
+final class AuthCodeVerified extends AuthState {}
+
+final class AuthPasswordReset extends AuthState {}

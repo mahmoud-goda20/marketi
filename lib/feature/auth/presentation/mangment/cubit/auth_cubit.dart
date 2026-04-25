@@ -9,8 +9,6 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.authRepo) : super(AuthInitial());
   final AuthRepo authRepo;
-  
-  
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
@@ -55,18 +53,39 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.sendForgetPasswordCodeWithEmail(email);
     result.fold(
       (failure) => emit(AuthFailure(errorMessage: failure.errorMessage)),
-      (_) => emit(AuthInitial()),
+      (_) => emit(AuthCodeSent()),
     );
   }
 
-  Future<void> logout() async {
+  Future<void> verifyEmailCode(String email, String code) async {
     emit(AuthLoading());
-    final result = await authRepo.logout();
+    final result = await authRepo.verifyEmailCode(email, code);
     result.fold(
       (failure) => emit(AuthFailure(errorMessage: failure.errorMessage)),
-      (_) async {
-        await PreferenceManager.instance.remove('token');
-        emit(AuthInitial());
+      (_) => emit(AuthCodeVerified()),
+    );
+  }
+
+  Future<void> resetPassword(
+    String email,
+    String newPassword,
+    String confirmPassword,
+  ) async {
+    print('🟡 resetPassword called: $email'); // ✅
+    emit(AuthLoading());
+    final result = await authRepo.resetPassword(
+      email,
+      newPassword,
+      confirmPassword,
+    );
+    result.fold(
+      (failure) {
+        print('❌ Error: ${failure.errorMessage}'); // ✅
+        emit(AuthFailure(errorMessage: failure.errorMessage));
+      },
+      (_) {
+        print('✅ Password reset success'); // ✅
+        emit(AuthPasswordReset());
       },
     );
   }

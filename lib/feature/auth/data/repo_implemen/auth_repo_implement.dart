@@ -10,9 +10,8 @@ import 'package:marketi/feature/auth/domain/repo/auth_repo.dart';
 class AuthRepoImplement extends AuthRepo {
   DataBaseServices dataBaseServices;
   AuthRepoImplement(this.dataBaseServices);
-  final token= PreferenceManager.instance.getString('token');
+  final token = PreferenceManager.instance.getString('token');
   @override
-
   Future<Either<Failer, AuthEntity>> login(
     String email,
     String password,
@@ -31,12 +30,6 @@ class AuthRepoImplement extends AuthRepo {
     } catch (e) {
       return left(ApiError(errorMessage: e.toString()));
     }
-  }
-
-  @override
-  Future<Either<Failer, void>> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
   }
 
   @override
@@ -74,9 +67,22 @@ class AuthRepoImplement extends AuthRepo {
     String email,
     String newPassword,
     String confirmPassword,
-  ) {
-    // TODO: implement resetPassword
-    throw UnimplementedError();
+  ) async {
+    try {
+      await dataBaseServices.postData(
+        path: '/auth/resetPassword',
+        data: {
+          'email': email,
+          'password': newPassword,
+          'confirmPassword': confirmPassword,
+        },
+      );
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioException(e));
+    } catch (e) {
+      return left(ApiError(errorMessage: e.toString()));
+    }
   }
 
   @override
@@ -97,8 +103,20 @@ class AuthRepoImplement extends AuthRepo {
   }
 
   @override
-  Future<Either<Failer, void>> verifyEmailCode(String email, String code) {
-    // TODO: implement verifyEmailCode
-    throw UnimplementedError();
+  Future<Either<Failer, void>> verifyEmailCode(
+    String email,
+    String code,
+  ) async {
+    try {
+      await dataBaseServices.postData(
+        path: '/auth/activeResetPass',
+        data: {'email': email, 'code': code},
+      );
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioException(e));
+    } catch (e) {
+      return left(ApiError(errorMessage: e.toString()));
+    }
   }
 }

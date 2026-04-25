@@ -13,7 +13,6 @@ abstract class AuthRepo {
     String confirmPassword,
   );
 
-  Future<Either<Failer, void>> logout();
 
   Future<Either<Failer, void>> resetPassword(
     String email,

@@ -39,21 +39,28 @@ class RegisterScreen extends StatelessWidget {
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (context) =>
-                  const Center(child: CircularProgressIndicator()),
+              builder: (context) => const Center(
+                child: CircularProgressIndicator(color: AppStyle.lightBlue100),
+              ),
             );
           } else if (state is AuthSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text("Registration successful!")));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: AppStyle.green,
+                content: Text("Registration successful!"),
+              ),
+            );
             // Hide loading indicator and navigate to the next screen
             Navigator.of(context).pop(); // Hide loading dialog
           } else if (state is AuthFailure) {
             // Hide loading indicator and show error message
             Navigator.of(context).pop(); // Hide loading dialog
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: AppStyle.red,
+                content: Text(state.errorMessage),
+              ),
+            );
           }
         },
         builder: (context, state) {

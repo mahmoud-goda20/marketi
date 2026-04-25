@@ -8,7 +8,7 @@ class CustomButton extends StatelessWidget {
     required this.buttonTitle,
   });
 
-  final Function() onPressed;
+  final Function()? onPressed;
   final String buttonTitle;
 
   @override

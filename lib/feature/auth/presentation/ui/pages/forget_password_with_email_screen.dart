@@ -28,27 +28,39 @@ class ForgetPasswordWithEmailScreen extends StatelessWidget {
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (context) =>
-                  const Center(child: CircularProgressIndicator()),
+              builder: (context) => const Center(
+                child: CircularProgressIndicator(color: AppStyle.lightBlue100),
+              ),
             );
-          } else if (state is AuthSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text("Verification code sent!")));
+          } else if (state is AuthCodeSent) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: AppStyle.green,
+                content: Text("Verification code sent!"),
+              ),
+            );
             // Hide loading indicator and navigate to the next screen
             Navigator.of(context).pop(); // Hide loading dialog
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => VerificationCodeWithEmailScreen(),
+                builder: (_) => BlocProvider.value(
+                  value: context.read<AuthCubit>(),
+                  child: VerificationCodeWithEmailScreen(
+                    email: _emailController.text.trim(),
+                  ),
+                ),
               ),
             );
           } else if (state is AuthFailure) {
             // Hide loading indicator and show error message
             Navigator.of(context).pop(); // Hide loading dialog
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: AppStyle.red,
+                content: Text(state.errorMessage),
+              ),
+            );
           }
         },
         builder: (context, state) {

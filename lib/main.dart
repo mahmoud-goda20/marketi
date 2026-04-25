@@ -6,6 +6,8 @@ import 'package:marketi/core/services/getit/get_it.dart';
 import 'package:marketi/core/services/localStorage/prefrence_manger.dart';
 import 'package:marketi/core/services/stripe_payment/stripe_keys.dart';
 import 'package:marketi/core/utils/app_style.dart';
+import 'package:marketi/feature/auth/domain/repo/auth_repo.dart';
+import 'package:marketi/feature/auth/presentation/mangment/cubit/auth_cubit.dart';
 import 'package:marketi/feature/cart/domain/repo/cart_repo.dart';
 import 'package:marketi/feature/cart/presentation/mangement/cubit/cart_cubit.dart';
 import 'package:marketi/feature/favorite/domain/repo/favorite_repo.dart';
@@ -37,6 +39,7 @@ class MainApp extends StatelessWidget {
               FavoriteCubit(getIt<FavoriteRepo>())..getFavorite(),
         ),
         BlocProvider(create: (context) => UiCubit()),
+        BlocProvider(create: (context) => AuthCubit(getIt<AuthRepo>())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
